@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuel Alvarado | Full Stack Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #030303;
+            --sidebar-bg: #080808;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.02);
+        }
+
+        body.light-theme {
+            --bg: #f1f5f9;
+            --sidebar-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Noise effect */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 320px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 50;
+        }
+
+        .profile-section h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .profile-section p {
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .nav-links li {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+            padding-left: 10px;
+        }
+
+        .contact-info {
+            margin-top: auto;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 320px;
+            flex: 1;
+            padding: 20px 10% 80px 10%;
+            max-width: 1400px;
+        }
+
+        section {
+            margin-bottom: 120px;
+            scroll-margin-top: 80px;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 0.75rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+        }
+
+        /* Bento Grid Proyectos */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .project-card {
+            grid-column: span 6;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.03);
+            transform: translateY(-5px);
+        }
+
+        .project-card.featured { grid-column: span 12; }
+
+        /* Timeline Experiencia */
+        .experience-item {
+            position: relative;
+            padding-left: 40px;
+            border-left: 1px solid var(--border);
+            padding-bottom: 60px;
+        }
+
+        .experience-item::before {
+            content: "";
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 9px;
+            height: 9px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .exp-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .exp-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .exp-company {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .exp-content ul {
+            list-style: none;
+            color: var(--text-muted);
+        }
+
+        .exp-content li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .exp-content li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Education Card */
+        .edu-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tech-tag-sm {
+            font-size: 0.7rem; 
+            border: 1px solid var(--border); 
+            padding: 5px 12px; 
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+        }
+
+        .view-project-btn {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .view-project-btn:hover {
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        .controls-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        @media (max-width: 1024px) {
+            aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 40px; }
+            main { margin-left: 0; padding: 40px 20px; }
+            .project-card { grid-column: span 12; }
+            h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="profile-section">
+            <h1>MANUEL<br>ALVARADO</h1>
+            <p data-i18n="prof-title">Full Stack Engineer & Infrastructure Analyst</p>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#proyectos" class="active"><i data-lucide="code-2"></i> <span data-i18n="nav-projects">Proyectos</span></a></li>
+                    <li><a href="#experiencia"><i data-lucide="briefcase"></i> <span data-i18n="nav-experience">Experiencia</span></a></li>
+                    <li><a href="#educacion"><i data-lucide="graduation-cap"></i> <span data-i18n="nav-education">Formación</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="contact-info">
+            <a href="tel:+584244277907" class="contact-item">
+                <i data-lucide="phone" size="18"></i> +58 424 4277907
+            </a>
+            <a href="mailto:manueljalvaradov@gmail.com" class="contact-item">
+                <i data-lucide="mail" size="18"></i> manueljalvaradov@gmail.com
+            </a>
+            <div class="contact-item">
+                <i data-lucide="map-pin" size="18"></i> Valencia, Venezuela
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        
+        <div class="controls-nav">
+            <button class="theme-toggle" id="theme-toggle" title="Cambiar tema" style="margin-bottom: 0;">
+                <i data-lucide="moon" id="theme-icon"></i>
+            </button>
+            <button class="theme-toggle" id="lang-toggle" title="Change Language" style="margin-bottom: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;">
+                EN
+            </button>
+        </div>
+
+        <!-- SECCIÓN PROYECTOS -->
+        <section id="proyectos">
+            <h2 data-i18n="hero-title">Proyectos</h2>
+            
+            <div class="bento-grid">
+                <!-- INFODOLAR (Primero) -->
+                <div class="project-card">
+                    <span class="section-tag" style="color: var(--accent);">Fintech / PWA</span>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">InfoDolar</h3>
+                    <p data-i18n="infodolar-desc" style="color: var(--text-muted); margin-bottom: 20px;">Respuesta técnica a la volatilidad económica en Venezuela. Monitor financiero con Web Scraping y arquitectura offline-first para acceso crítico sin internet.</p>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <span class="tech-tag-sm">Node.js</span>
+                        <span class="tech-tag-sm">Express</span>
+                        <span class="tech-tag-sm">Vue.js</span>
+                        <a href="https://infodolar.alwaysdata.net/" target="_blank" class="view-project-btn"><i data-lucide="external-link" size="14"></i> <span data-i18n="btn-view">Ver Proyecto</span></a>
+                    </div>
+                </div>
+
+                <!-- VENTPOS (Segundo) -->
+                <div class="project-card">
+                    <span class="section-tag" style="color: #a855f7;">Business Ecosystem</span>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">VentPOS</h3>
+                    <p data-i18n="ventpos-desc" style="color: var(--text-muted); margin-bottom: 20px;">Software POS robusto para retail. Gestión de inventarios masivos, clientes, cálculo automático de tasas y multimetodos de pago sincronizados en red local.</p>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span class="tech-tag-sm">PHP</span>
+                        <span class="tech-tag-sm">Vue.js</span>
+                        <span class="tech-tag-sm">MySQL</span>
+                    </div>
+                </div>
+
+                <!-- LA OVEJA NEGRA -->
+                <div class="project-card">
+                    <span class="section-tag" style="color: #ef4444;">Gastronomy ERP</span>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">La Oveja Negra</h3>
+                    <p data-i18n="ovejanegra-desc" style="color: var(--text-muted); margin-bottom: 20px;">Sistema ERP gastronómico con control de stock automatizado por recetas y gestión integral en la nube (Render).</p>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <span class="tech-tag-sm">PHP</span>
+                        <span class="tech-tag-sm">MySQL</span>
+                        <a href="https://la-ove_negra-pizzeria.onrender.com/" target="_blank" class="view-project-btn"><i data-lucide="external-link" size="14"></i> <span data-i18n="btn-demo">Ver Demo</span></a>
+                    </div>
+                </div>
+
+                <!-- ECOMELEVATE -->
+                <div class="project-card">
+                    <span class="section-tag" style="color: #10b981;">Corporate Platform</span>
+                    <h3 style="font-size: 2rem; margin: 10px 0;">EcomElevate</h3>
+                    <p data-i18n="ecomelevate-desc" style="color: var(--text-muted); margin-bottom: 20px;">Plataforma corporativa optimizada para SEO y conversión de leads, diseñada bajo estándares de Core Web Vitals.</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span class="tech-tag-sm">Laravel</span>
+                        <span class="tech-tag-sm">Vue.js</span>
+                        <span class="tech-tag-sm">Tailwind</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN EXPERIENCIA -->
+        <section id="experiencia">
+            <h2 data-i18n="exp-title-section">Experiencia</h2>
+
+            <div class="experience-timeline">
+                
+                <div class="experience-item">
+                    <span class="exp-date">2023 — Presente</span>
+                    <h3 class="exp-title" data-i18n="freelance-title">Freelance Web Developer</h3>
+                    <span class="exp-company">Soluciones de Software Independiente</span>
+                    <div class="exp-content">
+                        <p data-i18n="freelance-desc" style="color: var(--text-muted);">Ingeniería y despliegue de sistemas de gestión para el sector retail y gastronómico utilizando stack PHP/Vue.js. Optimización de flujos de inventario y facturación en tiempo real.</p>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <span class="exp-date">2022</span>
+                    <h3 class="exp-title" data-i18n="uc-title">Full-Stack Web Developer</h3>
+                    <span class="exp-company">Universidad de Carabobo</span>
+                    <div class="exp-content">
+                        <p data-i18n="uc-desc" style="color: var(--text-muted);">Desarrollo integral de plataforma de inducción docente (Vue.js + Vuetify / PHP). Diseño de arquitecturas de bases de datos relacionales con MySQL.</p>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <span class="exp-date">2021</span>
+                    <h3 class="exp-title" data-i18n="biomercados-title">Systems and Networks Analyst</h3>
+                    <span class="exp-company">BioMercados</span>
+                    <div class="exp-content">
+                        <p data-i18n="biomercados-desc" style="color: var(--text-muted);">Gestión de infraestructura de red crítica (VLANs, Firewalling, Load Balancing). Configuración de alta disponibilidad y políticas de respaldo.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN EDUCACIÓN -->
+        <section id="educacion">
+            <h2 data-i18n="edu-title-section">Educación</h2>
+            <div class="edu-card">
+                <div>
+                    <h3 data-i18n="edu-degree" style="font-size: 1.8rem; margin-bottom: 5px;">Licenciatura en Computación</h3>
+                    <p style="color: var(--accent); font-weight: 600;">Universidad de Carabobo</p>
+                </div>
+                <div style="text-align: right;">
+                    <span class="exp-date">2011 — 2024</span>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Valencia, Venezuela</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+        
+        // Language Toggle Logic
+        const langToggle = document.getElementById('lang-toggle');
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'en';
+
+        const translations = {
+            es: {
+                "nav-projects": "Proyectos",
+                "nav-experience": "Experiencia",
+                "nav-education": "Formación",
+                "hero-title": "Proyectos",
+                "exp-title-section": "Experiencia",
+                "edu-title-section": "Educación",
+                "infodolar-desc": "Respuesta técnica a la volatilidad económica en Venezuela. Monitor financiero con Web Scraping y arquitectura offline-first para acceso crítico sin internet.",
+                "ventpos-desc": "Software POS robusto para retail. Gestión de inventarios masivos, clientes, cálculo automático de tasas y multimetodos de pago sincronizados en red local.",
+                "ovejanegra-desc": "Sistema ERP gastronómico con control de stock automatizado por recetas y gestión integral en la nube (Render).",
+                "ecomelevate-desc": "Plataforma corporativa optimizada para SEO y conversión de leads, diseñada bajo estándares de Core Web Vitals.",
+                "freelance-title": "Freelance Web Developer",
+                "freelance-desc": "Ingeniería y despliegue de sistemas de gestión para el sector retail y gastronómico utilizando stack PHP/Vue.js. Optimización de flujos de inventario y facturación en tiempo real.",
+                "uc-title": "Full-Stack Web Developer",
+                "uc-desc": "Desarrollo integral de plataforma de inducción docente (Vue.js + Vuetify / PHP). Diseño de arquitecturas de bases de datos relacionales con MySQL.",
+                "biomercados-title": "Systems and Networks Analyst",
+                "biomercados-desc": "Gestión de infraestructura de red crítica (VLANs, Firewalling, Load Balancing). Configuración de alta disponibilidad y políticas de respaldo.",
+                "edu-degree": "Licenciatura en Computación",
+                "btn-view": "Ver Proyecto",
+                "btn-demo": "Ver Demo",
+                "tag-projects": "Soluciones Estratégicas",
+                "tag-experience": "Trayectoria Profesional",
+                "tag-education": "Formación Académica",
+                "prof-title": "Ingeniero Full Stack & Analista de Infraestructura"
+            },
+            en: {
+                "nav-projects": "Projects",
+                "nav-experience": "Experience",
+                "nav-education": "Education",
+                "hero-title": "Projects",
+                "exp-title-section": "Experience",
+                "edu-title-section": "Education",
+                "infodolar-desc": "Technical response to economic volatility in Venezuela. Financial monitor with Web Scraping and offline-first architecture for critical access without internet.",
+                "ventpos-desc": "Robust POS software for retail. Management of massive inventories, customers, automatic rate calculation, and multi-payment methods synchronized on local network.",
+                "ovejanegra-desc": "Gastronomic ERP system with automated stock control by recipes and integrated cloud management (Render).",
+                "ecomelevate-desc": "Corporate platform optimized for SEO and lead conversion, designed under Core Web Vitals standards.",
+                "freelance-title": "Freelance Web Developer",
+                "freelance-desc": "Engineering and deployment of management systems for the retail and gastronomic sector using PHP/Vue.js stack. Optimization of inventory flows and real-time billing.",
+                "uc-title": "Full-Stack Web Developer",
+                "uc-desc": "Comprehensive development of a faculty induction platform (Vue.js + Vuetify / PHP). Design of relational database architectures with MySQL.",
+                "biomercados-title": "Systems and Networks Analyst",
+                "biomercados-desc": "Management of critical network infrastructure (VLANs, Firewalling, Load Balancing). High availability configuration and backup policies.",
+                "edu-degree": "B.S. in Computer Science",
+                "btn-view": "View Project",
+                "btn-demo": "View Demo",
+                "tag-projects": "Strategic Solutions",
+                "tag-experience": "Professional Journey",
+                "tag-education": "Academic Background",
+                "prof-title": "Full Stack Engineer & Infrastructure Analyst"
+            }
+        };
+
+        function updateLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    if (el.tagName === 'A' || el.tagName === 'SPAN' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'P') {
+                        // Preserve icons if present
+                        const icon = el.querySelector('i');
+                        el.textContent = translations[lang][key];
+                        if (icon) el.prepend(icon);
+                    }
+                }
+            });
+            langToggle.textContent = lang === 'es' ? 'EN' : 'ES';
+            localStorage.setItem('lang', lang);
+        }
+
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            updateLanguage(currentLang);
+            lucide.createIcons();
+        });
+
+        // Initialize language
+        updateLanguage(currentLang);
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-theme');
+            themeIcon.setAttribute('data-lucide', 'sun');
+            lucide.createIcons();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-theme');
+            const isLight = body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            
+            // Update icon
+            themeIcon.setAttribute('data-lucide', isLight ? 'sun' : 'moon');
+            lucide.createIcons();
+        });
+
+        // Smooth scroll and active link
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+                
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
