@@ -6,7 +6,7 @@
 
 *   **InfoDolar**: Monitor financiero estratégico con arquitectura ultra-ligera (Vanilla PHP/JS) y base de datos SQLite.
 *   **VentPOS**: Ecosistema de punto de venta multimoneda con sincronización en red local.
-*   **La Oveja Negra**: Sistema ERP/POS gastronómico con gestión integral de inventarios en la nube.
+*   **La Oveja Negra**: Ecosistema SPA (Vue.js 3 + Node.js) para gestión integral gastronómica con API REST y MySQL.
 *   **EcomElevate**: Plataforma corporativa optimizada para SEO y conversión de leads.
 
 ## 🛠️ Stack Tecnológico
