@@ -459,19 +459,137 @@
             border-bottom: 1px solid var(--border);
         }
 
+        /* Floating Social Button (Mobile Only) */
+        .fab-container {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .fab-main {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 25px var(--accent-glow);
+            cursor: pointer;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            z-index: 1001;
+        }
+
+        .fab-main.active {
+            transform: rotate(135deg);
+            background: #ef4444;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
+        }
+
+        .fab-item {
+            width: 50px;
+            height: 50px;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            opacity: 0;
+            transform: translateY(20px) scale(0.5);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            text-decoration: none;
+        }
+
+        .fab-container.active .fab-item {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* Staggered animation delays */
+        .fab-container.active .fab-item:nth-child(1) { transition-delay: 0.3s; }
+        .fab-container.active .fab-item:nth-child(2) { transition-delay: 0.2s; }
+        .fab-container.active .fab-item:nth-child(3) { transition-delay: 0.1s; }
+        .fab-container.active .fab-item:nth-child(4) { transition-delay: 0s; }
+
         @media (max-width: 1024px) {
-            aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 40px; }
-            main { margin-left: 0; padding: 40px 20px; }
+            .fab-container { display: flex; }
+            aside { 
+                width: 100%; 
+                height: auto; 
+                position: fixed; 
+                top: 0;
+                left: 0;
+                border-right: none; 
+                border-bottom: 1px solid var(--border); 
+                padding: 20px; 
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                background: var(--sidebar-bg);
+            }
+            
+            .profile-section h1 { font-size: 1.5rem; margin-bottom: 0; }
+            .profile-section p { display: none; }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--sidebar-bg);
+                padding: 40px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-150%);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                margin-top: 0;
+                z-index: 49;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+            }
+
+            .contact-info { display: none; }
+            
+            main { margin-left: 0; padding: 100px 20px 40px 20px; }
             .project-card { grid-column: span 12; }
             h2 { font-size: 2.2rem; }
+
+            .mobile-menu-btn {
+                display: flex;
+                background: none;
+                border: 1px solid var(--border);
+                color: var(--text-main);
+                padding: 8px;
+                border-radius: 10px;
+                cursor: pointer;
+            }
         }
+
+        .mobile-menu-btn { display: none; }
     </style>
 </head>
 <body>
 
     <aside>
         <div class="profile-section">
-            <h1>MANUEL<br>ALVARADO</h1>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                <h1>MANUEL<br>ALVARADO</h1>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i data-lucide="menu" id="menu-icon"></i>
+                </button>
+            </div>
             <p data-i18n="prof-title">Full Stack Engineer & Infrastructure Analyst</p>
             
             <nav>
@@ -680,11 +798,74 @@
 
     </main>
 
+    <!-- Floating Contact Button (Mobile Only) -->
+    <div class="fab-container" id="fab-container">
+        <a href="https://github.com/manueljalvaradov" target="_blank" class="fab-item" title="GitHub">
+            <img src="github.png" alt="GitHub" class="contact-icon-img" style="width: 24px; height: 24px;">
+        </a>
+        <a href="https://www.linkedin.com/in/manuel-alvarado-528a4624a/" target="_blank" class="fab-item" title="LinkedIn">
+            <img src="linkedin.png" alt="LinkedIn" class="contact-icon-img" style="width: 24px; height: 24px;">
+        </a>
+        <a href="https://wa.me/584244277907" target="_blank" class="fab-item" title="WhatsApp">
+            <i data-lucide="message-circle" size="24"></i>
+        </a>
+        <a href="mailto:manueljalvaradov@gmail.com" class="fab-item" title="Email">
+            <i data-lucide="mail" size="24"></i>
+        </a>
+        <button class="fab-main" id="fab-main">
+            <i data-lucide="plus" id="fab-icon"></i>
+        </button>
+    </div>
+
     <script>
         lucide.createIcons();
         
         // Language Toggle Logic
         const langToggle = document.getElementById('lang-toggle');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const menuIcon = document.getElementById('menu-icon');
+        
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const isOpen = navLinks.classList.contains('active');
+            menuIcon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
+            lucide.createIcons();
+        });
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuIcon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            });
+        });
+
+        // FAB Toggle Logic
+        const fabMain = document.getElementById('fab-main');
+        const fabContainer = document.getElementById('fab-container');
+        const fabIcon = document.getElementById('fab-icon');
+
+        fabMain.addEventListener('click', () => {
+            fabContainer.classList.toggle('active');
+            fabMain.classList.toggle('active');
+            const isActive = fabContainer.classList.contains('active');
+            fabIcon.setAttribute('data-lucide', isActive ? 'x' : 'plus');
+            lucide.createIcons();
+        });
+
+        // Close FAB when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!fabContainer.contains(e.target) && fabContainer.classList.contains('active')) {
+                fabContainer.classList.remove('active');
+                fabMain.classList.remove('active');
+                fabIcon.setAttribute('data-lucide', 'plus');
+                lucide.createIcons();
+            }
+        });
+
         const urlParams = new URLSearchParams(window.location.search);
         let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'en';
 
