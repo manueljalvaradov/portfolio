@@ -18,7 +18,7 @@
 
 ## 🎓 Educación
 
-*   **Licenciatura en Computación** - Universidad de Carabobo (2011 - 2024).
+*   **Licenciatura en Computación** - Universidad de Carabobo (2024).
 
 ---
 Desarrollado con enfoque en rendimiento, escalabilidad y experiencia de usuario.
