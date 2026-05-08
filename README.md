@@ -4,7 +4,7 @@
 
 ## 🚀 Proyectos Destacados
 
-*   **InfoDolar**: Monitor financiero estratégico para el mercado venezolano con arquitectura offline-first.
+*   **InfoDolar**: Monitor financiero estratégico con arquitectura ultra-ligera (Vanilla PHP/JS) y base de datos SQLite.
 *   **VentPOS**: Ecosistema de punto de venta multimoneda con sincronización en red local.
 *   **La Oveja Negra**: Sistema ERP/POS gastronómico con gestión integral de inventarios en la nube.
 *   **EcomElevate**: Plataforma corporativa optimizada para SEO y conversión de leads.
