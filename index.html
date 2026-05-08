@@ -131,7 +131,7 @@
         /* Skills Grid */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
@@ -141,6 +141,15 @@
             padding: 30px;
             border-radius: 20px;
             transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-card.wide {
+            grid-column: span 3;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
         }
 
         .skill-card:hover {
@@ -151,6 +160,10 @@
         .skill-icon {
             color: var(--accent);
             margin-bottom: 20px;
+        }
+
+        .skill-card.wide .skill-icon {
+            margin-bottom: 0;
         }
 
         .skill-card h3 {
@@ -171,6 +184,17 @@
             padding: 4px 10px;
             border-radius: 6px;
             border: 1px solid var(--border);
+        }
+
+        @media (max-width: 1200px) {
+            .skills-grid { grid-template-columns: repeat(2, 1fr); }
+            .skill-card.wide { grid-column: span 2; }
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid { grid-template-columns: 1fr; }
+            .skill-card.wide { grid-column: span 1; flex-direction: column; align-items: flex-start; gap: 20px; }
+            .skill-card.wide .skill-icon { margin-bottom: 0; }
         }
 
         .contact-info {
@@ -493,14 +517,18 @@
                     </div>
                 </div>
 
-                <div class="skill-card">
-                    <i data-lucide="shield-check" class="skill-icon" size="32"></i>
-                    <h3 data-i18n="skill-infra">Infrastructure</h3>
-                    <div class="skill-tags">
-                        <span>VLANs & Networking</span>
-                        <span>Firewalls / Security</span>
-                        <span>Load Balancing</span>
-                        <span>Cloud (Vercel/Render)</span>
+                <div class="skill-card wide">
+                    <i data-lucide="shield-check" class="skill-icon" size="48"></i>
+                    <div>
+                        <h3 data-i18n="skill-infra">Infrastructure & Networking</h3>
+                        <div class="skill-tags">
+                            <span>VLANs & Routing</span>
+                            <span>Firewalls (Fortinet/Cisco)</span>
+                            <span>Load Balancing</span>
+                            <span>High Availability</span>
+                            <span>Cloud Infrastructure (Vercel/Render)</span>
+                            <span>Cybersecurity Policies</span>
+                        </div>
                     </div>
                 </div>
             </div>
