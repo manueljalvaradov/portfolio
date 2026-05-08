@@ -197,15 +197,93 @@
             filter: invert(0); /* Black in light mode */
         }
 
+        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 1200px) {
             .skills-grid { grid-template-columns: repeat(2, 1fr); }
             .skill-card.wide { grid-column: span 2; }
         }
 
+        @media (max-width: 992px) {
+            aside { width: 300px; }
+            main { margin-left: 300px; }
+        }
+
         @media (max-width: 768px) {
-            .skills-grid { grid-template-columns: 1fr; }
-            .skill-card.wide { grid-column: span 1; flex-direction: column; align-items: flex-start; gap: 20px; }
-            .skill-card.wide .skill-icon { margin-bottom: 0; }
+            body {
+                display: block;
+            }
+
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 40px 20px;
+                text-align: center;
+            }
+
+            aside .profile-section {
+                align-items: center;
+                margin-bottom: 30px;
+            }
+
+            aside .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            aside .nav-links li {
+                margin-bottom: 0;
+            }
+
+            aside .contact-info {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 10px;
+                text-align: left;
+                margin-top: 30px;
+            }
+
+            aside .contact-item {
+                margin-bottom: 5px;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 40px 20px;
+            }
+
+            .bento-grid, .skills-grid {
+                grid-template-columns: 1fr !important;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .skill-card.wide {
+                grid-column: auto;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .project-card h3 {
+                font-size: 1.5rem !important;
+            }
+
+            .controls-nav {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                background: var(--bg);
+                padding: 5px;
+                border-radius: 50px;
+                border: 1px solid var(--border);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
         }
 
         .contact-info {
