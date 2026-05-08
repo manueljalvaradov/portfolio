@@ -186,6 +186,17 @@
             border: 1px solid var(--border);
         }
 
+        .contact-icon-img {
+            width: 18px;
+            height: 18px;
+            filter: invert(1); /* White in dark mode */
+            transition: 0.3s;
+        }
+
+        body.light-theme .contact-icon-img {
+            filter: invert(0); /* Black in light mode */
+        }
+
         @media (max-width: 1200px) {
             .skills-grid { grid-template-columns: repeat(2, 1fr); }
             .skill-card.wide { grid-column: span 2; }
@@ -400,7 +411,7 @@
                 <i data-lucide="Github"></i> <span>GitHub</span>
             </a>
             <a href="https://www.linkedin.com/in/manuel-alvarado-528a4624a/" target="_blank" class="contact-item">
-                <i data-lucide="Linkedin"></i> <span>LinkedIn</span>
+                <img src="linkedin.png" alt="LinkedIn" class="contact-icon-img"> <span>LinkedIn</span>
             </a>
             <a href="https://wa.me/584244277907" target="_blank" class="contact-item">
                 <i data-lucide="message-circle" size="18"></i> WhatsApp
